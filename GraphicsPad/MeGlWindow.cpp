@@ -17,14 +17,21 @@ void SendDataToOpenGL()
 {
 	GLfloat verts[] =
 	{
-		+0.0f, +1.0f,
+		-1.0f, -1.0f, +0.5f,
 		+1.0f, +0.0f, +0.0f,
-		-1.0f, -1.0f,
-		+0.0f, +1.0f, +0.0f,
-		+1.0f, -1.0f,
+		+0.0f, +1.0f, -1.0f,
+		+1.0f, +0.0f, +0.0f,
+		+1.0f, -1.0f, +0.5f,
+		+1.0f, +0.0f, +0.0f,
+
+		-1.0f, +1.0f, -0.5f,
+		+0.0f, +0.0f, +1.0f,
+		+0.0f, -1.0f, -0.5f,
+		+0.0f, +0.0f, +1.0f,
+		+1.0f, +1.0f, -0.5f,
 		+0.0f, +0.0f, +1.0f,
 	};
-	GLushort indices[] = { 0, 1, 2, 2, 3, 4 };
+	GLushort indices[] = { 0, 1, 2, 3, 4, 5 };
 	GLuint vertexBufferID;
 	glGenBuffers(1, &vertexBufferID);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
@@ -32,9 +39,9 @@ void SendDataToOpenGL()
 				 verts, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (char*)(2 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (char*)(3 * sizeof(float)));
 
 	GLuint indexBufferID;
 	glGenBuffers(1, &indexBufferID);
@@ -107,13 +114,11 @@ void InstallShaders()
 	glCompileShader(vertexShaderID);
 	glCompileShader(fragmentShaderID);
 
-
 	if (!CheckShaderStatus(vertexShaderID)
 		|| !CheckShaderStatus(fragmentShaderID))
 	{
 		return;
 	}
-
 	
 	GLuint programID = glCreateProgram();
 	glAttachShader(programID, vertexShaderID);
@@ -131,13 +136,14 @@ void InstallShaders()
 void MeGlWindow::initializeGL()
 {
 	glewInit();
+	glEnable(GL_DEPTH_TEST);
 	SendDataToOpenGL();
 	InstallShaders();
-
 }
 
 void MeGlWindow::paintGL()
 {
+	glClear(GL_DEPTH_BUFFER_BIT);
 	glViewport(0, 0, width(), height());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
