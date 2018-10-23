@@ -1,5 +1,7 @@
 #include <GL\glew.h>
+#include <iostream>
 #include "MeGlWindow.h"
+using namespace std;
 
 extern const char* vertexShaderCode;
 extern const char* fragmentShaderCode;
@@ -56,6 +58,21 @@ void InstallShaders()
 
 	glCompileShader(vertexShaderID);
 	glCompileShader(fragmentShaderID);
+
+	GLint compileStatus;
+	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &compileStatus);
+	if (compileStatus != GL_TRUE)
+	{
+		GLint infoLogLength;
+		glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &infoLogLength);
+		GLchar* buffer = new GLchar[infoLogLength];
+
+		GLsizei bufferSize;
+		glGetShaderInfoLog(vertexShaderID, infoLogLength, &bufferSize, buffer);
+		cout << buffer << endl;
+
+		delete[] buffer;
+	}
 
 	GLuint programID = glCreateProgram();
 	glAttachShader(programID, vertexShaderID);
