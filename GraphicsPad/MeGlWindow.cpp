@@ -17,20 +17,12 @@ void SendDataToOpenGL()
 {
 	GLfloat verts[] =
 	{
-		-1.0f, +1.0f,
+		+0.0f, +1.0f,
 		+1.0f, +0.0f, +0.0f,
-
-		+1.0f, +1.0f,
-		+1.0f, +0.0f, +0.0f,
-
-		+0.0f, -0.0f,
-		+1.0f, +0.0f, +0.0f,
-
-		+1.0f, -1.0f,
-		+1.0f, +0.0f, +0.0f,
-
 		-1.0f, -1.0f,
-		+1.0f, +0.0f, +0.0f,
+		+0.0f, +1.0f, +0.0f,
+		+1.0f, -1.0f,
+		+0.0f, +0.0f, +1.0f,
 	};
 	GLushort indices[] = { 0, 1, 2, 2, 3, 4 };
 	GLuint vertexBufferID;
